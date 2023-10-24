@@ -42,9 +42,10 @@ function searchCity(response) {
   let tempC = document.querySelector("#tempNum");
 
   if (!CFCounter) {
-    CFCounter++; //If the temp was converted to Fahrenheit, this will reset the functions to convert to Fahrenheit and not Celsius
-  }
-  tempC.innerHTML = Math.round(response.data.main.temp);
+    tempC.innerHTML = Math.round(response.data.main.temp * (9 / 5) + 32);
+  } else {
+    tempC.innerHTML = Math.round(response.data.main.temp);
+  } //Sets the temp of the new city to either Fahrenheit or Celsius depending on the last temperature selected.
 }
 
 function onSearch(event) {
