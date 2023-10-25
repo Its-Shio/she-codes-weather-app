@@ -69,3 +69,7 @@ a {
   font-size: 12px;
   font-weight: 500;
 }
+#gitLink {
+  display: block;
+  text-align: center;
+}
