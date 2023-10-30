@@ -39,6 +39,15 @@ function searchCity(response) {
   citySelected.innerHTML =
     response.data.name + ", " + response.data.sys.country;
 
+  let weatherDesc = document.querySelector("#weatherType");
+  let tempDesc = response.data.weather[0].description;
+  tempDesc = tempDesc
+    .toLowerCase()
+    .split(" ")
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(" "); //Descriptions with multiple words are split into an array of segments, each segment's first letter is capitalized, and then the segments are sewn back together
+  weatherDesc.innerHTML = tempDesc;
+
   let tempC = document.querySelector("#tempNum");
 
   if (!CFCounter) {
@@ -46,6 +55,14 @@ function searchCity(response) {
   } else {
     tempC.innerHTML = Math.round(response.data.main.temp);
   } //Sets the temp of the new city to either Fahrenheit or Celsius depending on the last temperature selected.
+}
+function setCurrent(position) {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+  axios.get(apiUrl).then(searchCity);
 }
 
 function onSearch(event) {
@@ -59,14 +76,6 @@ function clickCurrent() {
   navigator.geolocation.getCurrentPosition(setCurrent);
 }
 
-function setCurrent(position) {
-  let lat = position.coords.latitude;
-  let lon = position.coords.longitude;
-
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-
-  axios.get(apiUrl).then(searchCity);
-}
 function convertTempF() {
   if (CFCounter) {
     //This ensures that you can't convert Celsius to Celsius, or Fahrenheit to Fahrenheit.
