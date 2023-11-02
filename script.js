@@ -70,7 +70,6 @@ function onSearch(event) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput.value}&units=metric`;
   axios.get(`${apiUrl}&appid=${apiKey}`).then(searchCity);
 }
-
 function clickCurrent() {
   navigator.geolocation.getCurrentPosition(setCurrent);
 }
@@ -118,23 +117,4 @@ fLink.addEventListener("click", convertTempF);
 
 let apiKey = "ebef9ca4a8de66ed586fac628fade056";
 
-clickCurrent(); //Sets the location to the user's current location upon loading the page
-
-/*let cityName = prompt("Enter a city.");
-cityName = cityName.toLowerCase();
-
-if (weather[cityName] !== undefined) {
-  let tempC = weather[cityName].temp;
-  let tempF = Math.round(tempC * (9 / 5) + 32);
-  tempC = Math.round(tempC);
-  let hum = weather[cityName].humidity;
-
-  cityName = cityName.charAt(0).toUpperCase() + cityName.slice(1);
-  alert(
-    `It is currently ${tempC}°C (${tempF}°F) in ${cityName} with a humidity of ${hum}%.`
-  );
-} else {
-  alert(
-    `Sorry, we don't know the weather for this city, try going to https://www.google.com/search?q=weather+${cityName}`
-  );
-}*/
+clickCurrent();
