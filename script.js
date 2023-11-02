@@ -36,15 +36,18 @@ function searchCity(response) {
   let humidityDesc = document.querySelector("#humidityText");
   humidityDesc.innerHTML = response.data.main.humidity + "%";
   let windSpeedDesc = document.querySelector("#windText");
+  let windSpeedUnits = document.querySelector("#windUnits");
   let windNum = response.data.wind.speed;
   let windUnits;
   if (CFCounter) {
     windUnits = "km/h";
-    windSpeedDesc.innerHTML = windNum + windUnits;
+    windSpeedDesc.innerHTML = windNum;
+    windSpeedUnits.innerHTML = windUnits;
   } else {
     windUnits = "mph";
-    windNum = Math.round((windNum / 1.609) * 100) / 100;
-    windSpeedDesc.innerHTML = windNum + windUnits;
+    windNum = Math.round((windNum / 1.60934) * 100) / 100;
+    windSpeedDesc.innerHTML = windNum;
+    windSpeedUnits.innerHTML = windUnits;
   }
   //windSpeedDesc.innerHTML = response.data.wind.speed + windUnits;
 
@@ -75,22 +78,40 @@ function clickCurrent() {
   navigator.geolocation.getCurrentPosition(setCurrent);
 }
 
-function convertTempF() {
+function convertImperial() {
   if (CFCounter) {
     //This ensures that you can't convert Celsius to Celsius, or Fahrenheit to Fahrenheit.
     let tempC = document.querySelector("#tempNum");
     let tempCInt = parseInt(tempC.innerHTML);
     let tempF = Math.round(tempCInt * (9 / 5) + 32);
     tempC.innerHTML = tempF;
+
+    let windKm = document.querySelector("#windText");
+    let windKmInt = parseFloat(windKm.innerHTML);
+    let windMiles = Math.round((windKmInt / 1.60934) * 100) / 100;
+    let windUnitsKm = document.querySelector("#windUnits");
+    let windUnitsMi = "mph";
+    windKm.innerHTML = windMiles;
+    windUnitsKm.innerHTML = windUnitsMi;
+
     CFCounter--;
   }
 }
-function convertTempC() {
+function convertMetric() {
   if (!CFCounter) {
     let tempF = document.querySelector("#tempNum");
     let tempFInt = parseInt(tempF.innerHTML);
     let tempC = Math.round(((tempFInt - 32) * 5) / 9);
     tempF.innerHTML = tempC;
+
+    let windMiles = document.querySelector("#windText");
+    let windMiInt = parseFloat(windMiles.innerHTML);
+    let windKm = Math.round(windMiInt * 1.60934 * 100) / 100;
+    let windUnitsMi = document.querySelector("#windUnits");
+    let windUnitsKm = "km/h";
+    windMiles.innerHTML = windKm;
+    windUnitsMi.innerHTML = windUnitsKm;
+
     CFCounter++;
   }
 }
@@ -102,9 +123,9 @@ let currentButton = document.querySelector("#btnCurrent");
 currentButton.addEventListener("click", clickCurrent);
 
 let cLink = document.querySelector("#celsius");
-cLink.addEventListener("click", convertTempC);
+cLink.addEventListener("click", convertMetric);
 let fLink = document.querySelector("#fahrenheit");
-fLink.addEventListener("click", convertTempF);
+fLink.addEventListener("click", convertImperial);
 
 let apiKey = "ebef9ca4a8de66ed586fac628fade056";
 
