@@ -20,6 +20,7 @@ dateText.innerHTML = dayOfWeek + " " + time + ", ";
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
+  console.log(response);
   let citySelected = document.querySelector("#cityName");
   citySelected.innerHTML =
     response.data.name + ", " + response.data.sys.country;
@@ -49,7 +50,9 @@ function searchCity(response) {
     windSpeedDesc.innerHTML = windNum;
     windSpeedUnits.innerHTML = windUnits;
   }
-  //windSpeedDesc.innerHTML = response.data.wind.speed + windUnits;
+
+  let image = document.querySelector("#icon");
+  image.innerHTML = `<img src = "https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"/>`;
 
   let setTemp = document.querySelector("#tempNum");
 
