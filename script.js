@@ -7,6 +7,15 @@ let daysOfWeek = [
   "Friday",
   "Saturday",
 ];
+let dateText = document.querySelector("#dateTime");
+let date = new Date();
+let dayOfWeek = daysOfWeek[date.getDay()];
+let time =
+  date.getHours() +
+  ":" +
+  (date.getMinutes() < 10 ? "0" : "") +
+  date.getMinutes();
+dateText.innerHTML = dayOfWeek + " " + time + ", ";
 
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
@@ -24,12 +33,27 @@ function searchCity(response) {
     .join(" "); //Descriptions with multiple words are split into an array of segments, each segment's first letter is capitalized, and then the segments are sewn back together
   weatherDesc.innerHTML = tempDesc;
 
-  let tempC = document.querySelector("#tempNum");
+  let humidityDesc = document.querySelector("#humidityText");
+  humidityDesc.innerHTML = response.data.main.humidity + "%";
+  let windSpeedDesc = document.querySelector("#windText");
+  let windNum = response.data.wind.speed;
+  let windUnits;
+  if (CFCounter) {
+    windUnits = "km/h";
+    windSpeedDesc.innerHTML = windNum + windUnits;
+  } else {
+    windUnits = "mph";
+    windNum = Math.round((windNum / 1.609) * 100) / 100;
+    windSpeedDesc.innerHTML = windNum + windUnits;
+  }
+  //windSpeedDesc.innerHTML = response.data.wind.speed + windUnits;
+
+  let setTemp = document.querySelector("#tempNum");
 
   if (!CFCounter) {
-    tempC.innerHTML = Math.round(response.data.main.temp * (9 / 5) + 32);
+    setTemp.innerHTML = Math.round(response.data.main.temp * (9 / 5) + 32);
   } else {
-    tempC.innerHTML = Math.round(response.data.main.temp);
+    setTemp.innerHTML = Math.round(response.data.main.temp);
   } //Sets the temp of the new city to either Fahrenheit or Celsius depending on the last temperature selected.
 }
 function setCurrent(position) {
@@ -70,16 +94,6 @@ function convertTempC() {
     CFCounter++;
   }
 }
-
-let dateText = document.querySelector("#dateTime");
-let date = new Date();
-let dayOfWeek = daysOfWeek[date.getDay()];
-let time =
-  date.getHours() +
-  ":" +
-  (date.getMinutes() < 10 ? "0" : "") +
-  date.getMinutes();
-dateText.innerHTML = dayOfWeek + " " + time;
 
 let searchButton = document.querySelector("#btnSubmit");
 searchButton.addEventListener("click", onSearch);

@@ -13,7 +13,7 @@
   border-radius: 10px;
 }
 .currentBtn {
-  background: #359f35;
+  background: #5396ed;
   color: azure;
   border: 1px solid #359f35;
   padding: 4px;
@@ -72,4 +72,8 @@ a {
 #gitLink {
   display: block;
   text-align: center;
+}
+.humidityWindData {
+  color: #5396ed;
+  font-weight: 500;
 }
