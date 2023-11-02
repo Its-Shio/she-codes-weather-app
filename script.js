@@ -41,11 +41,11 @@ function searchCity(response) {
   let windUnits;
   if (CFCounter) {
     windUnits = "km/h";
-    windSpeedDesc.innerHTML = windNum;
+    windSpeedDesc.innerHTML = Math.round(windNum * 10) / 10;
     windSpeedUnits.innerHTML = windUnits;
   } else {
     windUnits = "mph";
-    windNum = Math.round((windNum / 1.60934) * 100) / 100;
+    windNum = Math.round((windNum / 1.60934) * 10) / 10;
     windSpeedDesc.innerHTML = windNum;
     windSpeedUnits.innerHTML = windUnits;
   }
@@ -88,7 +88,7 @@ function convertImperial() {
 
     let windKm = document.querySelector("#windText");
     let windKmInt = parseFloat(windKm.innerHTML);
-    let windMiles = Math.round((windKmInt / 1.60934) * 100) / 100;
+    let windMiles = Math.round((windKmInt / 1.60934) * 10) / 10;
     let windUnitsKm = document.querySelector("#windUnits");
     let windUnitsMi = "mph";
     windKm.innerHTML = windMiles;
@@ -106,7 +106,7 @@ function convertMetric() {
 
     let windMiles = document.querySelector("#windText");
     let windMiInt = parseFloat(windMiles.innerHTML);
-    let windKm = Math.round(windMiInt * 1.60934 * 100) / 100;
+    let windKm = Math.round(windMiInt * 1.60934 * 10) / 10;
     let windUnitsMi = document.querySelector("#windUnits");
     let windUnitsKm = "km/h";
     windMiles.innerHTML = windKm;
