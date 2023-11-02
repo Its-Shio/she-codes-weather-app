@@ -31,8 +31,7 @@ let daysOfWeek = [
   "Saturday",
 ];
 
-let temp = document.querySelector("#tempNum");
-let CFCounter = 1;
+let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
   let citySelected = document.querySelector("#cityName");
