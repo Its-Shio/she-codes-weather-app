@@ -20,7 +20,6 @@ dateText.innerHTML = dayOfWeek + " " + time + ", ";
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
-  console.log(response);
   let citySelected = document.querySelector("#cityName");
   citySelected.innerHTML =
     response.data.name + ", " + response.data.sys.country;
