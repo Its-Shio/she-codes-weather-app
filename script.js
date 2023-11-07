@@ -118,6 +118,21 @@ function convertMetric() {
   }
 }
 
+function displayForecast() {
+  let forecastElement = document.querySelector("#weatherForecast");
+  let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
+  let forecastHtml = "";
+  days.forEach(function (day) {
+    forecastHtml =
+      forecastHtml +
+      `<div class="forecastDay">
+            Fri <img src="images/partly_cloudy.png" />
+            <span class="forecastTemp">24° 14°</span>
+          </div>`;
+  });
+  forecastElement.innerHTML = forecastHtml;
+}
+
 let searchButton = document.querySelector("#btnSubmit");
 searchButton.addEventListener("click", onSearch);
 
@@ -132,3 +147,4 @@ fLink.addEventListener("click", convertImperial);
 let apiKey = "ebef9ca4a8de66ed586fac628fade056";
 
 clickCurrent();
+displayForecast();

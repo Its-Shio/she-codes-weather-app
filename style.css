@@ -65,6 +65,14 @@ a {
 }
 .forecastDay {
   display: inline-block;
+  color: #5c636d;
+  margin: 0 auto;
+  font-size: 12px;
+  font-weight: 500;
+}
+.forecastTemp {
+  display: inline-block;
+  color: #5396ed;
   margin: 0 auto;
   font-size: 12px;
   font-weight: 500;
