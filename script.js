@@ -20,13 +20,11 @@ dateText.innerHTML = dayOfWeek + " " + time + ", ";
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
-  console.log(response);
   let citySelected = document.querySelector("#cityName");
-  citySelected.innerHTML =
-    response.data.name + ", " + response.data.sys.country;
+  citySelected.innerHTML = response.data.city + ", " + response.data.country;
 
   let weatherDesc = document.querySelector("#weatherType");
-  let tempDesc = response.data.weather[0].description;
+  let tempDesc = response.data.condition.description;
   tempDesc = tempDesc
     .toLowerCase()
     .split(" ")
@@ -35,7 +33,7 @@ function searchCity(response) {
   weatherDesc.innerHTML = tempDesc;
 
   let humidityDesc = document.querySelector("#humidityText");
-  humidityDesc.innerHTML = response.data.main.humidity + "%";
+  humidityDesc.innerHTML = response.data.temperature.humidity + "%";
   let windSpeedDesc = document.querySelector("#windText");
   let windSpeedUnits = document.querySelector("#windUnits");
   let windNum = response.data.wind.speed;
@@ -52,31 +50,32 @@ function searchCity(response) {
   }
 
   let image = document.querySelector("#icon");
-  image.innerHTML = `<img src = "https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"/>`;
+  image.innerHTML = `<img src = "http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png"/>`;
 
   let setTemp = document.querySelector("#tempNum");
 
   if (!CFCounter) {
-    setTemp.innerHTML = Math.round(response.data.main.temp * (9 / 5) + 32);
+    setTemp.innerHTML = Math.round(
+      response.data.temperature.current * (9 / 5) + 32
+    );
   } else {
-    setTemp.innerHTML = Math.round(response.data.main.temp);
+    setTemp.innerHTML = Math.round(response.data.temperature.current);
   } //Sets the temp of the new city to either Fahrenheit or Celsius depending on the last temperature selected.
-  getForecast(response.data.name, response.data.sys.country);
+  getForecast(response.data.city);
 }
 function setCurrent(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
 
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}`;
   axios.get(apiUrl).then(searchCity);
 }
 
 function onSearch(event) {
   event.preventDefault();
   let cityInput = document.querySelector("#cityInput");
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput.value}&units=metric`;
-  axios.get(`${apiUrl}&appid=${apiKey}`).then(searchCity);
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${cityInput.value}&units=metric`;
+  axios.get(`${apiUrl}&key=${apiKey}`).then(searchCity);
 }
 function clickCurrent() {
   navigator.geolocation.getCurrentPosition(setCurrent);
@@ -120,15 +119,12 @@ function convertMetric() {
   }
 }
 
-function getForecast(city, country) {
-  let apiUrl =
-    "https://cors-anywhere.herokuapp.com/" +
-    `http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${apiKey}&units=metric`;
-  console.log(apiUrl);
+function getForecast(city) {
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+
   axios.get(apiUrl).then(displayForecast);
 }
 function displayForecast(response) {
-  console.log(response.data);
   let forecastElement = document.querySelector("#weatherForecast");
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
   let forecastHtml = "";
@@ -137,7 +133,7 @@ function displayForecast(response) {
       forecastHtml +
       `<div class="forecastDay">
             ${day} <img src="images/partly_cloudy.png" />
-            <span class="forecastTemp">24° 14°</span>
+            <span class="forecastTemp">10° 10°</span>
           </div>`;
   });
   forecastElement.innerHTML = forecastHtml;
@@ -154,6 +150,6 @@ cLink.addEventListener("click", convertMetric);
 let fLink = document.querySelector("#fahrenheit");
 fLink.addEventListener("click", convertImperial);
 
-let apiKey = "ebef9ca4a8de66ed586fac628fade056";
+let apiKey = "de0e2db99e807aaf2e3te4ed847cc3o3";
 
 clickCurrent();
