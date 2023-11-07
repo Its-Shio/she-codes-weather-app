@@ -20,6 +20,7 @@ dateText.innerHTML = dayOfWeek + " " + time + ", ";
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
+  console.log(response);
   let citySelected = document.querySelector("#cityName");
   citySelected.innerHTML =
     response.data.name + ", " + response.data.sys.country;
@@ -60,6 +61,7 @@ function searchCity(response) {
   } else {
     setTemp.innerHTML = Math.round(response.data.main.temp);
   } //Sets the temp of the new city to either Fahrenheit or Celsius depending on the last temperature selected.
+  getForecast(response.data.name, response.data.sys.country);
 }
 function setCurrent(position) {
   let lat = position.coords.latitude;
@@ -118,7 +120,15 @@ function convertMetric() {
   }
 }
 
-function displayForecast() {
+function getForecast(city, country) {
+  let apiUrl =
+    "https://cors-anywhere.herokuapp.com/" +
+    `http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&appid=${apiKey}&units=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
+function displayForecast(response) {
+  console.log(response.data);
   let forecastElement = document.querySelector("#weatherForecast");
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
   let forecastHtml = "";
@@ -126,7 +136,7 @@ function displayForecast() {
     forecastHtml =
       forecastHtml +
       `<div class="forecastDay">
-            Fri <img src="images/partly_cloudy.png" />
+            ${day} <img src="images/partly_cloudy.png" />
             <span class="forecastTemp">24° 14°</span>
           </div>`;
   });
@@ -147,4 +157,3 @@ fLink.addEventListener("click", convertImperial);
 let apiKey = "ebef9ca4a8de66ed586fac628fade056";
 
 clickCurrent();
-displayForecast();
