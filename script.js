@@ -17,11 +17,14 @@ let time =
   date.getMinutes();
 dateText.innerHTML = dayOfWeek + " " + time + ", ";
 
+let currentCity = "";
+
 let CFCounter = 1; //Sets the counter used to determine current temperature units
 
 function searchCity(response) {
   let citySelected = document.querySelector("#cityName");
   citySelected.innerHTML = response.data.city + ", " + response.data.country;
+  currentCity = response.data.city;
 
   let weatherDesc = document.querySelector("#weatherType");
   let tempDesc = response.data.condition.description;
@@ -98,6 +101,7 @@ function convertImperial() {
     windUnitsKm.innerHTML = windUnitsMi;
 
     CFCounter--;
+    getForecast(currentCity);
   }
 }
 function convertMetric() {
@@ -116,6 +120,7 @@ function convertMetric() {
     windUnitsMi.innerHTML = windUnitsKm;
 
     CFCounter++;
+    getForecast(currentCity);
   }
 }
 
