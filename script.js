@@ -86,6 +86,7 @@ function clickCurrent() {
 
 function convertImperial() {
   if (CFCounter) {
+    CFCounter--;
     //This ensures that you can't convert Celsius to Celsius, or Fahrenheit to Fahrenheit.
     let tempC = document.querySelector("#tempNum");
     let tempCInt = parseInt(tempC.innerHTML);
@@ -99,13 +100,12 @@ function convertImperial() {
     let windUnitsMi = "mph";
     windKm.innerHTML = windMiles;
     windUnitsKm.innerHTML = windUnitsMi;
-
-    CFCounter--;
     getForecast(currentCity);
   }
 }
 function convertMetric() {
   if (!CFCounter) {
+    CFCounter++;
     let tempF = document.querySelector("#tempNum");
     let tempFInt = parseInt(tempF.innerHTML);
     let tempC = Math.round(((tempFInt - 32) * 5) / 9);
@@ -118,8 +118,6 @@ function convertMetric() {
     let windUnitsKm = "km/h";
     windMiles.innerHTML = windKm;
     windUnitsMi.innerHTML = windUnitsKm;
-
-    CFCounter++;
     getForecast(currentCity);
   }
 }
