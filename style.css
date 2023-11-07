@@ -57,7 +57,7 @@ a {
 .forecast {
   display: flex;
   margin: 15px auto;
-  max-width: 500px;
+  max-width: 550px;
   padding: 10px;
   border: 2px solid #91a0b3;
   border-radius: 6px;
@@ -84,4 +84,10 @@ a {
 .humidityWindData {
   color: #5396ed;
   font-weight: 500;
+}
+.forecastIcon {
+  width: 90px;
+  height: 90px;
+  display: block;
+  margin: 0 auto;
 }

@@ -120,21 +120,40 @@ function convertMetric() {
 }
 
 function getForecast(city) {
-  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  let apiUrl = "";
+  if (CFCounter) {
+    apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  } else if (!CFCounter) {
+    apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=imperial`;
+  }
 
   axios.get(apiUrl).then(displayForecast);
 }
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[date.getDay()];
+}
 function displayForecast(response) {
+  console.log(response);
   let forecastElement = document.querySelector("#weatherForecast");
-  let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
+
   let forecastHtml = "";
-  days.forEach(function (day) {
-    forecastHtml =
-      forecastHtml +
-      `<div class="forecastDay">
-            ${day} <img src="images/partly_cloudy.png" />
-            <span class="forecastTemp">10° 10°</span>
+  response.data.daily.forEach(function (day, index) {
+    if (index < 5) {
+      forecastHtml =
+        forecastHtml +
+        `<div class="forecastDay">
+            ${formatDay(day.time)} 
+            <img class = "forecastIcon" src=http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+              day.condition.icon
+            }.png />
+            <span class="forecastTemp">${Math.round(
+              day.temperature.maximum
+            )}° ${Math.round(day.temperature.minimum)}°</span>
           </div>`;
+    }
   });
   forecastElement.innerHTML = forecastHtml;
 }
